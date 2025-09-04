@@ -3,7 +3,7 @@
  ```
 Name:Hema Dharshini N
 Reg no:212223220034
-
+```
 ## AIM:
  
 
@@ -106,7 +106,7 @@ print("Decrypted:", decrypted_text)
 ```
 
 
-## Output:
+# Output:
 
 <img width="1680" alt="Playfair" src="https://github.com/user-attachments/assets/e2011979-7419-4e4d-b7ab-fccc19eec54d" />
 
