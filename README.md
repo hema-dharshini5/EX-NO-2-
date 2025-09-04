@@ -1,6 +1,8 @@
 ## EX. NO:2 IMPLEMENTATION OF PLAYFAIR CIPHER
 
- 
+ ```
+Name:Hema Dharshini N
+Reg no:212223220034
 
 ## AIM:
  
@@ -32,12 +34,81 @@ STEP-4: Group the plain text in pairs and match the corresponding corner letters
 STEP-5: Display the obtained cipher text.
 
 
+```
+import itertools
+
+def generate_playfair_matrix(key):
+    key = key.upper().replace("J", "I")  # Convert key to uppercase and replace J with I
+    key = "".join(dict.fromkeys(key))  # Remove duplicate letters
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    key += "".join(c for c in alphabet if c not in key)
+    
+    matrix = [list(key[i:i+5]) for i in range(0, 25, 5)]
+    return matrix
+
+def find_position(matrix, letter):
+    for row, line in enumerate(matrix):
+        if letter in line:
+            return row, line.index(letter)
+    return None
+
+def playfair_cipher(text, key, mode='encrypt'):
+    matrix = generate_playfair_matrix(key)
+    text = text.upper().replace("J", "I").replace(" ", "")  # Convert text to uppercase
+    pairs = []
+    i = 0
+
+    while i < len(text):
+        a = text[i]
+        if i + 1 < len(text) and text[i] != text[i + 1]:
+            b = text[i + 1]
+            i += 2
+        else:
+            b = 'X'  # Add 'X' if the letter is repeated or if it's a single letter at the end
+            i += 1
+
+        pairs.append((a, b))
+
+    result = ""
+    for a, b in pairs:
+        pos_a = find_position(matrix, a)
+        pos_b = find_position(matrix, b)
+
+        if pos_a is None or pos_b is None:
+            continue  # Skip if letter is not found (shouldn't happen)
+
+        row_a, col_a = pos_a
+        row_b, col_b = pos_b
+
+        if row_a == row_b:  # Same row
+            col_a = (col_a + 1) % 5 if mode == 'encrypt' else (col_a - 1) % 5
+            col_b = (col_b + 1) % 5 if mode == 'encrypt' else (col_b - 1) % 5
+        elif col_a == col_b:  # Same column
+            row_a = (row_a + 1) % 5 if mode == 'encrypt' else (row_a - 1) % 5
+            row_b = (row_b + 1) % 5 if mode == 'encrypt' else (row_b - 1) % 5
+        else:  # Rectangle swap
+            col_a, col_b = col_b, col_a
+
+        result += matrix[row_a][col_a] + matrix[row_b][col_b]
+
+    return result
+
+# Get user input
+message = input("Enter the message: ").strip()
+key = input("Enter the key: ").strip()
+
+encrypted_text = playfair_cipher(message, key, mode='encrypt')
+decrypted_text = playfair_cipher(encrypted_text, key, mode='decrypt')
+
+print("Encrypted:", encrypted_text)
+print("Decrypted:", decrypted_text)
+
+```
 
 
-Program:
+## Output:
 
+<img width="1680" alt="Playfair" src="https://github.com/user-attachments/assets/e2011979-7419-4e4d-b7ab-fccc19eec54d" />
 
-
-
-
-Output:
+## Result
+The program is executed successfully.
